@@ -1,6 +1,7 @@
 <template>
     <ElCard class="form-card">
-      <ElForm :model="formData" :rules="rules" lable-position="top">
+      <!--атрибут ref нужен для доступа к объекту компоненты ElForm-->
+      <ElForm :model="formData" ref="addItemForm" :rules="rules" lable-position="top">
           <ElFormItem label="Type" prop="type">
             <ElSelect class="type-select" v-model="formData.type" placeholder="Choose type...">
               <ElOption label="Income" value="INCOME" />
@@ -29,31 +30,37 @@ export default {
     formData: {
       type: "INCOME",
       comment: "",
-      value: 0
+      value: 0,
     },
 
-    //необходимо создать правила (это относится к Element Ui, т.к. так работают их формы)
+    //необходимо создать правила (это относится к Element Ui, так работают их формы)
     rules: {
       // мы должны объявить такие же ключи как в formData
       // далее массив с условиями
       type: [
-        { required: true, message: 'Please select type', triger: 'blur' }
+        { required: true, message: 'Please select type', trigger: 'blur' }
       ],
       comment: [
-        { required: true, message: 'Please input comment', triger: 'change' }
+        { required: true, message: 'Please input comment', trigger: 'change' }
       ],
       value: [
-        { required: true, message: 'Please input comment', triger: 'change' },
-        { type: 'number', message: 'Value must be a number', triger: 'change' }
+        { required: true, message: 'Please input value', trigger: 'change' },
+        { type: 'number', message: 'Value must be a number', trigger: 'change' }
       ]
     }
 
   }),
-  methods: {
-    onSubmit() {
-
+    methods: {
+      onSubmit() {
+        this.$refs.addItemForm.validate(valid => {
+          // возможно в cтроке с number ошибка
+          if (valid) {
+            this.$emit('submitForm', { ...this.formData }); //оператором spread копировали formData
+            this.$refs.addItemForm.resetFields(); // сброс полей, есть в документации про формы
+          }
+        })
+      }
     }
-  }
 }
 </script>
 
