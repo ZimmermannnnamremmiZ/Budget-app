@@ -59,4 +59,5 @@ export default {
         margin-left: auto;
         margin-right: 20px;
     }
+
 </style>

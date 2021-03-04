@@ -37,8 +37,12 @@ export default {
   }),
   computed: {
     totalBalance() {
-      return Object.values(this.list).reduce(
-        (acc, item) => acc + item.value, 0)
+      let res =  Object.values(this.list).reduce(
+        (acc, item) => acc + item.value, 0);
+      let totalValueDiv = document.getElementsByClassName('total-value')[0];
+      if (res < 0) {totalValueDiv.classList.add("red")}
+
+      return res
     }
   },
   methods: {
@@ -58,7 +62,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -66,5 +70,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+};
+
+.red {
+  color: rgb(235, 60, 60);
 }
 </style>

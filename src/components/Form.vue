@@ -74,5 +74,4 @@ export default {
 .type-select {
   width: 100%;
 }
-
 </style>

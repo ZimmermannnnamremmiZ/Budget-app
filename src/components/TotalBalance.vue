@@ -1,5 +1,5 @@
 <template>
-  <div class="total-value">Balance: {{ total }}</div>
+  <div class="total-value" :class="[red]">Balance: {{ total }}</div>
 </template>
 
 <script>
@@ -10,7 +10,10 @@ export default {
         type: Number,
         default: 0
       }
-    }
+    },
+    // data: () => ({
+
+    // })
 }
 </script>
 
@@ -20,5 +23,9 @@ export default {
   text-transform: uppercase;
   padding: 20px;
   text-align: center;
+};
+
+.red {
+  color: red;
 }
 </style>
