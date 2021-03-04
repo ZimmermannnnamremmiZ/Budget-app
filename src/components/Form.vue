@@ -10,11 +10,11 @@
           </ElFormItem>
 
           <ElFormItem label="Comments" prop="comment">
-            <ElInput v-model="formData.comment"/>
+            <ElInput v-model="formData.comment" />
           </ElFormItem>
 
           <ElFormItem label="Value" prop="value">
-            <ElInput v-model="formData.value"/>
+            <ElInput v-model.number="formData.value" />
           </ElFormItem>
 
           <ElButton @click="onSubmit" type="primary">Submit</ElButton>
@@ -30,7 +30,7 @@ export default {
     formData: {
       type: "INCOME",
       comment: "",
-      value: 0,
+      value: 0
     },
 
     //необходимо создать правила (это относится к Element Ui, так работают их формы)
@@ -53,9 +53,10 @@ export default {
     methods: {
       onSubmit() {
         this.$refs.addItemForm.validate(valid => {
-          // возможно в cтроке с number ошибка
+          if (this.formData.type === "OUTCOME") {if (this.formData.value > 0) {this.formData.value *= -1}} // сделал так, что отнимается в любом случае
+
           if (valid) {
-            this.$emit('submitForm', { ...this.formData }); //оператором spread копировали formData
+            this.$emit('submitForm', { ...this.formData }); //оператором spread копировали объект из formData
             this.$refs.addItemForm.resetFields(); // сброс полей, есть в документации про формы
           }
         })

@@ -46,7 +46,12 @@ export default {
       this.$delete(this.list, id);
     },
     onFormSubmit(data) {
-      console.log(data)
+      const newObj = {
+        ...data,
+        id: String(Math.random())
+      };
+
+      this.$set(this.list, newObj.id, newObj);
     }
   }
 }
