@@ -2,6 +2,7 @@
   <div id="app">
     <Form @submitForm="onFormSubmit"/>
     <TotalBalance :total="totalBalance"/>
+    <DeleteConfirm />
     <BudgetList :list="list" @deleteItem="onDeleteItem"/>
   </div>
 </template>
@@ -9,14 +10,17 @@
 <script>
 import BudgetList from '@/components/BudgetList';
 import TotalBalance from '@/components/TotalBalance';
-import Form from '@/components/Form'
+import Form from '@/components/Form';
+import DeleteConfirm from '@/components/DeleteConfirm';
 
 export default {
   name: 'App',
   components: {
     BudgetList,
     TotalBalance,
-    Form
+    Form,
+    DeleteConfirm
+
   },
   data: () => ({
     // список дохода, расходов (объект объектов)
@@ -37,25 +41,35 @@ export default {
   }),
   computed: {
     totalBalance() {
-      let res =  Object.values(this.list).reduce(
+      const res =  Object.values(this.list).reduce(
         (acc, item) => acc + item.value, 0);
-      let totalValueDiv = document.getElementsByClassName('total-value')[0];
-      if (res < 0) {totalValueDiv.classList.add("red")}
-
       return res
-    }
+    },
   },
   methods: {
     onDeleteItem(id) {
       this.$delete(this.list, id);
+      const totalValueDiv = document.getElementsByClassName('total-value')[0];
+      if (this.totalBalance === 0) {totalValueDiv.style="color: black"
+      } else if (this.totalBalance < 0) {
+        totalValueDiv.style="color: red"
+        } else if (this.totalBalance > 0) {
+          totalValueDiv.style="color: green"
+          }
     },
     onFormSubmit(data) {
       const newObj = {
         ...data,
         id: String(Math.random())
       };
-
       this.$set(this.list, newObj.id, newObj);
+      const totalValueDiv = document.getElementsByClassName('total-value')[0];
+      if (this.totalBalance === 0) {totalValueDiv.style="color: black"
+      } else if (this.totalBalance < 0) {
+        totalValueDiv.style="color: red"
+        } else if (this.totalBalance > 0) {
+          totalValueDiv.style="color: green"
+          }
     }
   }
 }
@@ -72,7 +86,11 @@ export default {
   margin-top: 60px;
 };
 
-.red {
+/* .red {
   color: rgb(235, 60, 60);
 }
+
+.green {
+  color: green;
+} */
 </style>

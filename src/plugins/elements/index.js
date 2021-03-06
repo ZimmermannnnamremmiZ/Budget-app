@@ -10,7 +10,8 @@ import { // импортирование компонент из element-ui по
   Input,
   Select,
   Option,
-  Alert
+  Alert,
+  Dialog
 } from 'element-ui'
 
 // объединение компонент в массив
@@ -22,7 +23,8 @@ const elements = [
   Input,
   Select,
   Option,
-  Alert
+  Alert,
+  Dialog
 ];
 
 // заставляем фреймворк работать на английском
