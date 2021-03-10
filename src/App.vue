@@ -2,7 +2,6 @@
   <div id="app">
     <Form @submitForm="onFormSubmit"/>
     <TotalBalance :total="totalBalance"/>
-    <DeleteConfirm />
     <BudgetList :list="list" @deleteItem="onDeleteItem"/>
   </div>
 </template>
@@ -11,16 +10,13 @@
 import BudgetList from '@/components/BudgetList';
 import TotalBalance from '@/components/TotalBalance';
 import Form from '@/components/Form';
-import DeleteConfirm from '@/components/DeleteConfirm';
 
 export default {
   name: 'App',
   components: {
     BudgetList,
     TotalBalance,
-    Form,
-    DeleteConfirm
-
+    Form
   },
   data: () => ({
     // список дохода, расходов (объект объектов)
@@ -86,11 +82,4 @@ export default {
   margin-top: 60px;
 };
 
-/* .red {
-  color: rgb(235, 60, 60);
-}
-
-.green {
-  color: green;
-} */
 </style>
