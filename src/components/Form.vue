@@ -1,7 +1,7 @@
 <template>
     <ElCard class="form-card">
       <!--атрибут ref нужен для доступа к объекту компоненты ElForm-->
-      <ElForm :model="formData" ref="addItemForm" :rules="rules" lable-position="top">
+      <ElForm :model="formData" status-icon ref="addItemForm" :rules="rules" lable-position="top">
           <ElFormItem label="Type" prop="type">
             <ElSelect class="type-select" v-model="formData.type" placeholder="Choose type...">
               <ElOption label="Income" value="INCOME" />
@@ -26,12 +26,26 @@
 <script>
 export default {
   name: "Form",
-  data: () => ({
-    formData: {
-      type: "INCOME",
-      comment: "",
-      value: 0
-    },
+  data() {
+      let checkValue = (rule, value, callback) => {
+        if (value === 0) {
+          return callback(new Error('Value cannot equiel zero'));
+        }
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('Please input digits'));
+          } else {
+            callback();
+          }
+        }, 1000);
+      };
+
+      return {
+        formData: {
+        type: "INCOME",
+        comment: "",
+        value: 0
+       },
 
     //необходимо создать правила (это относится к Element Ui, так работают их формы)
     rules: {
@@ -45,19 +59,25 @@ export default {
       ],
       value: [
         { required: true, message: 'Please input value', trigger: 'change' },
-        { type: 'number', message: 'Value must be a number', trigger: 'change' }
+        { type: 'number', message: 'Value must be a number', trigger: 'change' },
+        { validator: checkValue, triger: 'blur' }
       ]
     }
 
-  }),
+
+
+  }},
     methods: {
       onSubmit() {
-        this.$refs.addItemForm.validate(valid => {
+        this.$refs.addItemForm.validate((valid) => {
           if (this.formData.type === "OUTCOME") {if (this.formData.value > 0) {this.formData.value *= -1}} // сделал так, что отнимается в любом случае
 
           if (valid) {
             this.$emit('submitForm', { ...this.formData }); //оператором spread копировали объект из formData
             this.$refs.addItemForm.resetFields(); // сброс полей, есть в документации про формы
+          } else {
+            console.log('error submit!!');
+            return false;
           }
         })
       }
